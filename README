@@ -1,30 +1,19 @@
 What is Pymem ?
-
 Pymem is a memory wrapper built on top of python ctypes and windll imports to facilitate process memory access in Read or Write. It has functionalities such as Opening a process in debug mode, hijacking threads, listing process modules and much more.
 
-
 Why Pymem ? 
-
 Pymem was built with the idea of providing an easy-to-use wrapper to manipulate any kind of windows process. 
-It can be used to created fully passive “bots” as well as advanced, active bots with dll injection for games like “World of Warcraft”.
-
+It can be used to created fully passive "bots" as well as advanced, active bots with dll injection for games like "World of Warcraft".
 
 Who is working on Pymem ?
-
 Pymem is written and maintained by Fabien Reboia (srounet@gmail.com) with the help from contributors such as Pierre-F. Brousseau (email) and is licenced under postcard licence.
 
+Requirements :
+- Python >= 2.5 ( available at http://www.python.org )
+- setuptool  ( available at http://pypi.python.org/pypi/setuptools )
+- *pywin32 
 
-What is Pymem ?
+   *installed automatically by setuptool
 
-Pymem is a memory wrapper built on top of python ctypes and windll imports to facilitate process memory access in Read or Write. It has functionalities such as Opening a process in debug mode, hijacking threads, listing process modules and much more.
-
-
-Why Pymem ? 
-
-Pymem was built with the idea of providing an easy-to-use wrapper to manipulate any kind of windows process. 
-It can be used to created fully passive “bots” as well as advanced, active bots with dll injection for games like “World of Warcraft”.
-
-
-Who is working on Pymem ?
-
-Pymem is written and maintained by Fabien Reboia (srounet@gmail.com) with the help from contributors such as Pierre-F. Brousseau (email) and is licenced under postcard licence.
+Installation :
+easy_install pymem.egg ( will add the functionality )
