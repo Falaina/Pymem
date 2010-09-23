@@ -20,7 +20,7 @@ setup(name='Pymem',
       maintainer='Fabien Reboia',
       maintainer_email='srounet@gmail.com',
       url=' http://www.pymem.org/',
-      packages=['pymem'],
+      packages=['pymem', 'pymem.modules'],
       long_description="A python library for windows, providing the needed \
 functions to start working on your own with memory editing",
       license="postcard license",
