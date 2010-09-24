@@ -9,7 +9,7 @@
 # 94200 Ivry sur seine
 
 
-from distutils.core import setup
+from setuptools import setup
 
 
 setup(name='Pymem',
@@ -24,5 +24,16 @@ setup(name='Pymem',
       long_description="A python library for windows, providing the needed \
 functions to start working on your own with memory editing",
       license="postcard license",
-      platforms=["windows"]
+      platforms=["windows"],
+      keywords='memory win32 windows process',
+      classifiers=[
+          "License :: POSTCARD LICENCE",
+          "Programming Language :: Python",
+          "Development Status :: 1 - Beta",
+          "Intended Audience :: Developers",
+      ],
+      install_requires=[
+        'setuptools',
+        'pywin32',
+      ]
 )
