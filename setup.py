@@ -1,14 +1,3 @@
-# "THE POSTCARD LICENSE" (Revision 0):
-# Fabien Reboia wrote this file. As long as you retain this notice you
-# can do whatever you want with this stuff. If you like the work you can
-# send me a post card in return at this address :
-
-# Fabien Reboia
-# France,
-# 110 rue jean le galleu
-# 94200 Ivry sur seine
-
-
 from setuptools import setup
 
 
@@ -20,7 +9,7 @@ setup(name='Pymem',
       maintainer='Fabien Reboia',
       maintainer_email='srounet@gmail.com',
       url=' http://www.pymem.org/',
-      packages=['pymem', 'pymem.modules'],
+      packages=['pymem', 'pymem.modules', 'pymem.constants', 'pymem.contrib'],
       long_description="A python library for windows, providing the needed \
 functions to start working on your own with memory editing",
       license="postcard license",

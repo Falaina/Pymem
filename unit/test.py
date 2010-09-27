@@ -1,27 +1,18 @@
-# "THE POSTCARD LICENSE" (Revision 0):
-# Fabien Reboia wrote this file. As long as you retain this notice you
-# can do whatever you want with this stuff. If you like the work you can
-# send me a post card in return at this address :
-
-# Fabien Reboia
-# France,
-# 110 rue jean le galleu
-# 94200 Ivry sur seine
-
-
 import unittest
-import pymem
+from pymem.pymem import Pymem
 
 
 class TestPymemClass(unittest.TestCase):
     """TestPymemClass"""
 
     def setUp(self):
-        pass
+        self.pymem = Pymem()
 
-    def test_create(self):
-        pass
+    def test_open_from_name(self):
+        self.assertTrue(self.pymem.open_process_from_name('explorer'))
 
+    def test_open_from_id(self):
+        self.assertTrue(self.pymem.open_process(2124))
 
 if __name__ == '__main__':
     unittest.main()
