@@ -115,7 +115,7 @@ def process_list():
     h_process_snap = CREATETOOLHELP_32_SNAPSHOT(\
         TH32CS_CLASS.SNAPPROCESS, 0)
     pe32 = PROCESSENTRY32()
-    pe32.dwSize = sizeof(PROCESSENTRY32)
+    pe32.dwSize = sizeof( PROCESSENTRY32 )
     ret = PROCESS_32_FIRST(h_process_snap, pointer(pe32))
     while ret:
         ret = PROCESS_32_NEXT(h_process_snap, pointer(pe32))

@@ -4,6 +4,7 @@ Pymem module.
 
 from modules.process import Process
 from modules.process import process_from_name
+from modules.memory import Memory
 from contrib.decorators import is_init
 
 
@@ -18,6 +19,7 @@ manipulations.
         """
 
         self.process = None
+        self.memory = None
         self.pid = None  # refractor
         self.process32 = None  # refractor
         self.process_handle = None
@@ -28,6 +30,13 @@ manipulations.
         """
 
         self.process = Process()
+
+    def _init_memory(self):
+        """
+        Initialize memory class when it's needed by pymem.
+        """
+
+        self.memory = Memory()
 
     @is_init('process')
     def open_process(self, process_id, debug=True):
@@ -55,4 +64,22 @@ manipulations.
             if len(processes) - 1 == number:
                 process = processes[len(processes) - 1]
                 return self.open_process(process.th32ProcessID, debug)
+        return False
+
+    @is_init('process')
+    @is_init('memory')
+    def read_offset(self, address, selected_type):
+        """
+        Read memory from a process.
+        If the type <T> is supported, this method will provide the required
+        call in order to read, from the process. If either the type <T> is not
+        supported or process is not Open, the method will raise an Exception.
+
+        Supported types : float, int, uint, long, ulong, byte
+        """
+
+        if self.process.is_process_open:
+            if self.memory.is_process_set == False:
+                self.memory.set_process(self.process.h_process)
+            return self.memory.read_offset(address, selected_type)
         return False

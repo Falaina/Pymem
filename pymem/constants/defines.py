@@ -2,8 +2,13 @@
 Ctype function defines
 """
 
-from ctypes import c_int, c_void_p, c_long
-from ctypes import windll, POINTER, wintypes
+from ctypes import c_int
+from ctypes import c_void_p
+from ctypes import c_long
+from ctypes import windll
+from ctypes import POINTER
+from ctypes import wintypes
+
 from pymem.constants.structures import PROCESSENTRY32
 
 PROCESS_32_FIRST = windll.kernel32.Process32First
@@ -30,3 +35,7 @@ OPEN_PROCESS_TOKEN = windll.advapi32.OpenProcessToken
 OPEN_PROCESS_TOKEN.argtypes = (wintypes.HANDLE, wintypes.DWORD, \
 POINTER(wintypes.HANDLE))
 OPEN_PROCESS_TOKEN.restype = wintypes.BOOL
+
+READ_PROCESS_MEMORY = windll.kernel32.ReadProcessMemory
+
+WRITE_PROCESS_MEMORY = windll.kernel32.WriteProcessMemory
