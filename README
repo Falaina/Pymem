@@ -17,3 +17,6 @@ Requirements :
 
 Installation :
 easy_install pymem.egg ( will add the functionality )
+
+Actual pylint score :
+Your code has been rated at 9.62/10 (previous run: 9.62/10)
