@@ -26,6 +26,14 @@ class TestPymemClass(unittest.TestCase):
         self.assertNotEqual(self.pymem.read_offset(0xC79D18 - 0x8, 'string'),\
         '')
 
+    def test_list_module32(self):
+        self.pymem.open_process_from_name('explorer')
+        self.assertNotEqual(self.pymem.list_module32(), [])
+
+    def test_has_module32(self):
+        self.pymem.open_process_from_name('explorer')
+        self.assertTrue(self.pymem.has_module32('ntdll'))
+
 
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestPymemClass)
