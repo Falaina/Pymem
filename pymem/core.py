@@ -66,7 +66,6 @@ manipulations.
                 return self.open_process(process.th32ProcessID, debug)
         return False
 
-    @is_init('process')
     @is_init('memory')
     def read_offset(self, address, selected_type):
         """

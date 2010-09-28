@@ -1,5 +1,5 @@
 import unittest
-from pymem.pymem import Pymem
+from pymem.core import Pymem
 
 
 class TestPymemClass(unittest.TestCase):
@@ -18,10 +18,15 @@ class TestPymemClass(unittest.TestCase):
         PLAYER_BASE = 0xCD87A8
         PLAYER_BASE_OFFSET1 = 0x34
         PLAYER_BASE_OFFSET2 = 0x24
-        print self.pymem.open_process_from_name('Wow')
-        pointer = self.pymem.read_offset([PLAYER_BASE, PLAYER_BASE_OFFSET1, PLAYER_BASE_OFFSET2], 'uint')
-        print pointer
+        self.pymem.open_process_from_name('Wow')
+        pointer  = self.pymem.read_offset([0xCD87A8 - 0x8, 0x34, 0x24], 'uint')
         print self.pymem.read_offset(pointer + 0x798, 'float')
+
+	def test_read_string(self):
+		print 'testing string'
+		self.pymem.open_process_from_name('Wow')
+        print self.pymem.read_offset(0xC79D18 - 0x8, 'string')
+        
         
 
 if __name__ == '__main__':

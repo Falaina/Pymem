@@ -25,11 +25,12 @@ processes.
         self.is_process_set = self._h_process is not None
         self.read_types = {
             'float': self._read_float,
-            'int': self._read_int,
             'uint': self._read_uint,
+            'int': self._read_int,
             'long': self._read_long,
             'ulong': self._read_ulong,
-            'byte': self._read_bytes
+            'byte': self._read_bytes,
+            'string': self._read_string,
         }
 
     def set_process(self, h_process):
@@ -51,11 +52,9 @@ processes.
 
         try:
             if type(address) == list:
-                ret = 0
-                for addr in address:
-                    ret = ret + addr
-                    ret = self.read_types[selected_type](ret)
-                    print ret
+                ret = self.read_types[selected_type](address[0])
+                for addr in address[1:]:
+                    ret = self.read_types[selected_type](ret + addr)
                 return ret
             else:
                 return self.read_types[selected_type](address)
@@ -73,8 +72,7 @@ processes.
         buffer_size = byte
         READ_PROCESS_MEMORY(self._h_process, address, buff, \
         buffer_size, byref(bytes_read))
-        string = buff.raw
-        return string
+        return buff.raw
 
     @has_handle()
     def _read_int(self, address):
@@ -129,3 +127,19 @@ processes.
         string = self._read_bytes(address, 4)
         number = struct.unpack('<f', string)[0]
         return number
+
+    @has_handle()
+    def _read_string(self, address, byte=50):
+        """
+        read string from a process, process has to be opened has usual.
+        This method use readBytes.
+
+        __usage__	name = m.readString(0x000000)
+        """
+
+        buff = self._read_bytes(address, byte)
+        i = buff.find('\x00')
+        if i != -1:
+            return buff[:i]
+        else:
+            return buff
