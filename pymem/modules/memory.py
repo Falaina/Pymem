@@ -85,6 +85,7 @@ processes.
         number = struct.unpack('<i', string)[0]
         return number
 
+    @has_handle()
     def _read_uint(self, address):
         """
         read unsigned int from a process, process has to be opened has usual.
@@ -93,6 +94,28 @@ processes.
 
         string = self._read_bytes(address, 4)
         number = struct.unpack('<I', string)[0]
+        return number
+
+    @has_handle()
+    def _read_int64(self, address):
+        """
+        read unsigned int from a process, process has to be opened has usual.
+        This method use readBytes.
+        """
+
+        string = self._read_bytes(address, 8) #int64 is twice as big as a normal int (ie c_ulonglong)
+        number = struct.unpack('<q', string)[0]
+        return number
+        
+    @has_handle()
+    def _read_uint64(self, address):
+        """
+        read unsigned int from a process, process has to be opened has usual.
+        This method use readBytes.
+        """
+
+        string = self._read_bytes(address, 8) #int64 is twice as big as a normal int (ie c_ulonglong)
+        number = struct.unpack('<Q', string)[0]
         return number
 
     @has_handle()
