@@ -83,7 +83,7 @@ manipulations.
         call in order to read, from the process. If either the type <T> is not
         supported or process is not Open, the method will raise an Exception.
 
-        Supported types : float, int, uint, long, ulong, byte
+        Supported types : float, int, uint, long, ulong, int64, uint64, byte
         """
 
         if self.process.is_process_open:

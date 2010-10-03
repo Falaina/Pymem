@@ -6,7 +6,7 @@ Memory module.
 from pymem.constants.defines import READ_PROCESS_MEMORY
 from pymem.contrib.decorators import has_handle
 from ctypes import create_string_buffer
-from ctypes import c_ulong
+from ctypes import c_ulong, c_float, c_char_p, c_ulonglong
 from ctypes import byref
 import struct
 
@@ -29,6 +29,8 @@ processes.
             'int': self._read_int,
             'long': self._read_long,
             'ulong': self._read_ulong,
+            'int64': self._read_int64,
+            'uint64': self._read_uint64,
             'byte': self._read_bytes,
             'string': self._read_string,
         }
@@ -166,3 +168,40 @@ processes.
             return buff[:i]
         else:
             return buff
+            
+  #------ Memory writing ------#
+    
+  #@param address   memory address to write
+  #@param data      information to write
+  #@return  True if successful (no error)
+  @hasHandle
+  def _write_offset(self, address, data):
+    
+    #Choose type letter for struct.pack
+    typeDict = { type(int()):'i', 
+                 #type(uint()):'I', 
+                 type(float()):'f',
+                 #type(int64()):'',
+                 type(long()):'Q', #int64/uint64, here assuming uint64
+                 type(str()):'s',
+               }
+    typeLetter = typeDict[type(data)]
+    
+    #Choose 5th argument for WriteProcessMemory
+    refDict = { type(int()):c_int(0), 
+            type(float()):c_float(0.),
+            type(str()):c_char_p(str(data)),
+            #type(uint()):c_uint(data), #uint() doesn't exist in python
+            #type(int64()):c_ulonglong(data), #int64/uint64 does not exist in python, look for long() which is anything bigger than int()
+            type(long()):c_ulonglong(0), #int64/uint64
+          }
+
+    c_data = struct.pack(typeLetter,data)
+    length = struct.calcsize(typeLetter)
+    if type(data)==type(str): length = len(data) #or len(data)*4? #@Not tested, likely wrong
+    windll.kernel32.SetLastError(10000)
+    if not windll.kernel32.WriteProcessMemory(self._h_process, address, c_data, length, byref(refDict[type(data)])):
+        print "Failed to write memory."
+        print  "Error Code: ",windll.kernel32.GetLastError()
+    else:
+        return True  
