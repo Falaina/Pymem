@@ -1,3 +1,5 @@
+[OBSOLETE] 
+
 What is Pymem ?
 Pymem is a memory wrapper built on top of python ctypes and windll imports to facilitate process memory access in Read or Write. It has functionalities such as Opening a process in debug mode, hijacking threads, listing process modules and much more.
 
@@ -20,3 +22,5 @@ easy_install pymem.egg ( will add the functionality )
 
 Actual pylint score :
 Your code has been rated at 9.62/10 (previous run: 9.62/10)
+
+[OBSOLETE] 
