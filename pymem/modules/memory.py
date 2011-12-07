@@ -6,8 +6,9 @@ Memory module.
 from pymem.constants.defines import READ_PROCESS_MEMORY
 from pymem.contrib.decorators import has_handle
 from ctypes import create_string_buffer
-from ctypes import c_ulong, c_float, c_char_p, c_ulonglong
+from ctypes import c_ulong, c_float, c_char_p, c_ulonglong, c_int
 from ctypes import byref
+from ctypes import windll
 import struct
 
 
@@ -108,7 +109,7 @@ processes.
         string = self._read_bytes(address, 8) #int64 is twice as big as a normal int (ie c_ulonglong)
         number = struct.unpack('<q', string)[0]
         return number
-        
+
     @has_handle()
     def _read_uint64(self, address):
         """
@@ -159,7 +160,7 @@ processes.
         read string from a process, process has to be opened has usual.
         This method use readBytes.
 
-        __usage__	name = m.readString(0x000000)
+        __usage__  name = m.readString(0x000000)
         """
 
         buff = self._read_bytes(address, byte)
@@ -168,40 +169,42 @@ processes.
             return buff[:i]
         else:
             return buff
-            
-  #------ Memory writing ------#
-    
-  #@param address   memory address to write
-  #@param data      information to write
-  #@return  True if successful (no error)
-  @hasHandle
-  def _write_offset(self, address, data):
-    
-    #Choose type letter for struct.pack
-    typeDict = { type(int()):'i', 
-                 #type(uint()):'I', 
-                 type(float()):'f',
-                 #type(int64()):'',
-                 type(long()):'Q', #int64/uint64, here assuming uint64
-                 type(str()):'s',
-               }
-    typeLetter = typeDict[type(data)]
-    
-    #Choose 5th argument for WriteProcessMemory
-    refDict = { type(int()):c_int(0), 
+
+    #------ Memory writing ------#
+    # --- WARNING THIS PART OF THE CODE HAS NOT BEEN TESTED  !!!!!!! --- WARNING
+
+    #@param address   memory address to write
+    #@param data      information to write
+    #@return  True if successful (no error)
+    @has_handle
+    def _write_offset(self, address, data):
+        #Choose type letter for struct.pack
+        typeDict = {
+            type(int()):'i',
+            #type(uint()):'I',
+            type(float()):'f',
+            #type(int64()):'',
+            type(long()):'Q', #int64/uint64, here assuming uint64
+            type(str()):'s',
+        }
+        typeLetter = typeDict[type(data)]
+
+        #Choose 5th argument for WriteProcessMemory
+        refDict = {
+            type(int()):c_int(0),
             type(float()):c_float(0.),
             type(str()):c_char_p(str(data)),
             #type(uint()):c_uint(data), #uint() doesn't exist in python
             #type(int64()):c_ulonglong(data), #int64/uint64 does not exist in python, look for long() which is anything bigger than int()
             type(long()):c_ulonglong(0), #int64/uint64
-          }
+        }
 
-    c_data = struct.pack(typeLetter,data)
-    length = struct.calcsize(typeLetter)
-    if type(data)==type(str): length = len(data) #or len(data)*4? #@Not tested, likely wrong
-    windll.kernel32.SetLastError(10000)
-    if not windll.kernel32.WriteProcessMemory(self._h_process, address, c_data, length, byref(refDict[type(data)])):
-        print "Failed to write memory."
-        print  "Error Code: ",windll.kernel32.GetLastError()
-    else:
-        return True  
+        c_data = struct.pack(typeLetter,data)
+        length = struct.calcsize(typeLetter)
+        if type(data)==type(str):length = len(data) #or len(data)*4? #@Not tested, likely wrong
+        windll.kernel32.SetLastError(10000)
+        if not windll.kernel32.WriteProcessMemory(self._h_process, address, c_data, length, byref(refDict[type(data)])):
+            print "Failed to write memory."
+            print  "Error Code: ",windll.kernel32.GetLastError()
+        else:
+            return True
